@@ -91,9 +91,17 @@ class Game extends React.Component {
         if (move === 0) { return sq != null; }
         return sq !== history[move-1].squares[mvIndex];
       });
-      const desc = move ?
-        'Go to move #' + move + ' (' + (mvIndex % 3 + 1) + ', ' + (~~(mvIndex / 3) + 1) + ')':
-        'Go to game start';
+      let desc;
+      if (move === this.state.stepNumber) {
+        desc = move ?
+          <b>{'Go to move #' + move + ' (' + (mvIndex % 3 + 1) + ', ' + (~~(mvIndex / 3) + 1) + ')'}</b>:
+          <b>{'Go to game start'}</b>; 
+      }
+      else {
+        desc = move ?
+          'Go to move #' + move + ' (' + (mvIndex % 3 + 1) + ', ' + (~~(mvIndex / 3) + 1) + ')':
+          'Go to game start';
+      }
       return (
         <li key={move}>
           <button onClick={() => this.jumpTo(move)}>{desc}</button>
@@ -120,7 +128,6 @@ class Game extends React.Component {
         <div className="game-info">
           <div>{status}</div>
           <ol>{moves}</ol>
-          <ol>{/* TODO */}</ol>
         </div>
       </div>
     );
