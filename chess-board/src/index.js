@@ -10,7 +10,6 @@ function Square(props) {
   if ((props.index%2 + (row%2))%2 !== 0) {
     button = <button className="dark-square" onClick={props.onClick}>
       {props.value}
-    </button>
   }
   return (button);
 }
