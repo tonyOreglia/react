@@ -140,7 +140,11 @@ class Game extends React.Component {
         winningLine = {winner.winningLine}
       />
     } else {
-      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+      if (history.length === 10 && this.state.stepNumber === 9) {
+        status = 'CATS game!';
+      } else {
+        status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+      }
       board = <Board
         squares={current.squares}
         onClick={(i) => this.handleClick(i)}
