@@ -3,11 +3,16 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 function Square(props) {
-  return (
-    <button className="square" onClick={props.onClick}>
+  let button = <button className="square" onClick={props.onClick}>
+    {props.value}
+  </button>
+  let row = ~~(props.index / 8)
+  if ((props.index%2 + (row%2))%2 !== 0) {
+    button = <button className="dark-square" onClick={props.onClick}>
       {props.value}
     </button>
-  );
+  }
+  return (button);
 }
 
 class Board extends React.Component {
@@ -16,6 +21,7 @@ class Board extends React.Component {
       <Square
         value={this.props.squares[i]}
         onClick={() => this.props.onClick(i)}
+        index={i}
       />
     );
   }
