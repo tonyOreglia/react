@@ -3,12 +3,18 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 function Square(props) {
-  let button = <button className="light-square" onClick={props.onClick}>
+  let background = null;
+  if (props.selected) {
+    background = 'rgb(255, 246, 124)';
+  }
+  let button =
+  <button className="light-square" onClick={props.onClick} style={{ background: background }}>
     {props.value}
   </button>
   let row = ~~(props.index / 8)
   if ((props.index%2 + (row%2))%2 !== 0) {
-    button = <button className="dark-square" onClick={props.onClick}>
+    button =
+    <button className="dark-square" onClick={props.onClick} style={{ background: background }}>
       {props.value}
     </button>
   }
@@ -17,11 +23,16 @@ function Square(props) {
 
 class Board extends React.Component {
   renderSquare(i) {
+    let selected = false;
+    if (i === this.props.selected) {
+      selected = true;
+    }
     return (
       <Square
         value={this.props.squares[i]}
         onClick={() => this.props.onClick(i)}
         index={i}
+        selected={selected}
       />
     );
   }
@@ -61,7 +72,8 @@ class Game extends React.Component {
       history: [{
         squares: blackStartingPos.concat(Array(32).fill(null), whiteStartingPos)
       }],
-      stepNumber: 0
+      stepNumber: 0,
+      selectedSq: null
     };
   }
 
@@ -72,31 +84,28 @@ class Game extends React.Component {
   }
 
   handleClick(i) {
-    return;
+    this.setState({
+      selectedSq: i
+    });
   }
 
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
 
-    let board;
-
-    board = <Board
-      squares={current.squares}
-      onClick={(i) => this.handleClick(i)}
-    />
-
     return (
       <div className="game">
         <div className="game-board">
-          {board}
+          <Board
+            squares={current.squares}
+            onClick={(i) => this.handleClick(i)}
+            selected={this.state.selectedSq}
+          />
         </div>
       </div>
     );
   }
 }
-
-// ========================================
 
 ReactDOM.render(
   <Game />,

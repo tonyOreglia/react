@@ -48,9 +48,14 @@ ol, ul {
 }
 
 
-.square:focus {
+.dark-square:focus {
   outline: none;
 }
+
+.light-square:focus {
+  outline: none;
+}
+
 
 .kbd-navigation .square:focus {
   background: #ddd;
