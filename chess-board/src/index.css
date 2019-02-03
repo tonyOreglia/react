@@ -17,7 +17,7 @@ ol, ul {
   margin-bottom: 10px;
 }
 
-.square {
+.light-square {
   background: #fff;
   border: 1px solid #999;
   float: left;
@@ -33,7 +33,7 @@ ol, ul {
 }
 
 .dark-square {
-  background: rgb(63, 63, 63);
+  background: rgb(131, 130, 130);
   border: 1px solid #999;
   float: left;
   font-size: 24px;
