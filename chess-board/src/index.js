@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 function Square(props) {
+  const row = ~~(props.index / 8)
+  const darkSq = (props.index%2 + (row%2))%2 !== 0;
   let background = null;
   if (props.selected) {
     background = 'rgb(255, 246, 124)';
@@ -11,8 +13,7 @@ function Square(props) {
   <button className="light-square" onClick={props.onClick} style={{ background: background }}>
     {props.value}
   </button>
-  let row = ~~(props.index / 8)
-  if ((props.index%2 + (row%2))%2 !== 0) {
+  if (darkSq) {
     button =
     <button className="dark-square" onClick={props.onClick} style={{ background: background }}>
       {props.value}
@@ -46,7 +47,7 @@ class Board extends React.Component {
         sqs.push(this.renderSquare(j + i*8));
       }
       rows.push(
-      <div className="board-row">
+      <div key={i} className="board-row">
         {sqs}
       </div>
       )
@@ -84,6 +85,33 @@ class Game extends React.Component {
   }
 
   handleClick(i) {
+    // unset the selected square if it's reclicked
+    if (i === this.state.selectedSq) {
+      this.setState({
+        selectedSq: null
+      });
+    return;
+    }
+
+    const history = this.state.history.slice(0, this.state.stepNumber + 1);
+    const current = history[history.length - 1];
+    const board = current.squares.slice();
+    const previouslySelectedSq = this.state.selectedSq
+    
+    const previouslySelectedSquareContainsPiece = previouslySelectedSq != null && board[previouslySelectedSq] !== null
+    if (previouslySelectedSquareContainsPiece) {
+      board[i] = board[previouslySelectedSq];
+      board[previouslySelectedSq] = null;
+      this.setState({
+        history: history.concat([{
+          squares: board
+        }]),
+        selectedSq: null,
+        stepNumber: history.length,
+      })
+      return;
+    }
+    
     this.setState({
       selectedSq: i
     });
